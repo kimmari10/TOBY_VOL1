@@ -12,8 +12,7 @@ public class UserDao {
 	
 	public void add(User user)throws ClassNotFoundException, SQLException {
 		
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "JS", "1111");
+		Connection c = getConnection();
 		
 		PreparedStatement ps = c.prepareStatement(
 				"INSERT INTO USERS(ID, NAME, PASSWORD) VALUES(?,?,?)");
@@ -31,9 +30,7 @@ public class UserDao {
 
 	public User get(String id) throws ClassNotFoundException, SQLException {
 
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "JS", "1111");
-		
+		Connection c = getConnection();
 		PreparedStatement ps = c.prepareStatement(
 				"SELECT * FROM USERS WHERE ID = ?");
 		ps.setString(1, id);
@@ -52,6 +49,13 @@ public class UserDao {
 		c.close();
 		
 		return user;
+	}
+	
+	private Connection getConnection() throws ClassNotFoundException, SQLException {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "JS", "1111");
+		
+		return c;
 	}
 	
 	
