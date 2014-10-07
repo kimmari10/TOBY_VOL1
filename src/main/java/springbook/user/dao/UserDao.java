@@ -1,18 +1,23 @@
 package springbook.user.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import springbook.user.domain.User;
 
-public abstract class UserDao {
+
+public class UserDao {
 	
-	public void add(User user)throws ClassNotFoundException, SQLException {
-		
-		Connection c = getConnection();
+	private SimpleConnectionMaker simpleConnectionMaker;
+	
+	public UserDao() {
+		simpleConnectionMaker = new SimpleConnectionMaker();
+	}
+	
+	public void add(User user) throws ClassNotFoundException, SQLException {
+		Connection c = simpleConnectionMaker.makeNewConnection();
 		
 		PreparedStatement ps = c.prepareStatement(
 				"INSERT INTO USERS(ID, NAME, PASSWORD) VALUES(?,?,?)");
@@ -27,10 +32,10 @@ public abstract class UserDao {
 		c.close();
 		
 	}
-
+	
 	public User get(String id) throws ClassNotFoundException, SQLException {
-
-		Connection c = getConnection();
+		Connection c = simpleConnectionMaker.makeNewConnection();
+		
 		PreparedStatement ps = c.prepareStatement(
 				"SELECT * FROM USERS WHERE ID = ?");
 		ps.setString(1, id);
@@ -50,21 +55,5 @@ public abstract class UserDao {
 		
 		return user;
 	}
-	
-	public abstract Connection getConnection();
-	
-	public class NUserDao extends UserDao {
-		public Connection getConnection(){
-			// N사 DB connection 생성코드
-		}
-	}
-	
-	public class DUserDao extends UserDao {
-		public Connection getConnection(){
-			// D사 DB connection 생성코드
-		}
-	}
-	
-	
 	
 }
