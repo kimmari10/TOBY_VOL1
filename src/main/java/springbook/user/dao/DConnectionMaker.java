@@ -1,12 +1,16 @@
 package springbook.user.dao;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DConnectionMaker implements ConnectionMaker{
 	
-	public Connection makeConnection(){
-		// D 사의 독자적인 방법으로 Connection을 생성하는 코드
-		return null;
+	public Connection makeConnection() throws ClassNotFoundException, SQLException{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "JS", "1111");
+		
+		return c;
 		
 	}
 
