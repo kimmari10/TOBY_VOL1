@@ -12,6 +12,8 @@ public class UserDao {
 	
 	private static UserDao INSTANCE;
 	private ConnectionMaker connectionMaker;
+	private Connection c;
+	private User user;
 	
 	public UserDao(ConnectionMaker connectionMaker) {
 		this.connectionMaker = connectionMaker;
@@ -23,7 +25,7 @@ public class UserDao {
 	}
 	
 	public void add(User user) throws ClassNotFoundException, SQLException {
-		Connection c = connectionMaker.makeConnection();
+		this.c = connectionMaker.makeConnection();
 		
 		PreparedStatement ps = c.prepareStatement(
 				"INSERT INTO USERS(ID, NAME, PASSWORD) VALUES(?,?,?)");
@@ -35,12 +37,12 @@ public class UserDao {
 		ps.executeUpdate();
 		
 		ps.close();
-		c.close();
+		this.c.close();
 		
 	}
 	
 	public User get(String id) throws ClassNotFoundException, SQLException {
-		Connection c = connectionMaker.makeConnection();
+		this.c = connectionMaker.makeConnection();
 		
 		PreparedStatement ps = c.prepareStatement(
 				"SELECT * FROM USERS WHERE ID = ?");
@@ -50,16 +52,16 @@ public class UserDao {
 		
 		rs.next();
 		
-		User user = new User();
-		user.setId(rs.getString("id"));
-		user.setName(rs.getString("name"));
-		user.setPassword(rs.getString("password"));
+		this.user = new User();
+		this.user.setId(rs.getString("id"));
+		this.user.setName(rs.getString("name"));
+		this.user.setPassword(rs.getString("password"));
 		
 		rs.close();
 		ps.close();
-		c.close();
+		this.c.close();
 		
-		return user;
+		return this.user;
 	}
 	
 }
