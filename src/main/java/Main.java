@@ -1,5 +1,7 @@
 import java.sql.SQLException;
 
+import springbook.user.dao.ConnectionMaker;
+import springbook.user.dao.DConnectionMaker;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.User;
 
@@ -7,7 +9,10 @@ import springbook.user.domain.User;
 public class Main {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		UserDao dao = new UserDao();
+		ConnectionMaker connectionMaker = new DConnectionMaker();
+		// 의존관계 설정
+		// D사는 DConnectionMaker를, N사는 NConnectionMaker 오브젝트를 생성자에 넣어주면 된다.
+		UserDao dao = new UserDao(connectionMaker);
 		
 		User user = new User();
 		user.setId("whiteship");
