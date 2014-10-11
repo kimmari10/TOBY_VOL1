@@ -17,10 +17,6 @@ public class UserDao {
 	private Connection c;
 	private User user;
 	
-	public void setConnectionMaker(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
-	}
-	
 	public UserDao() {
 		AnnotationConfigApplicationContext context = 
 				new AnnotationConfigApplicationContext(DaoFactory.class);
@@ -75,7 +71,5 @@ public class UserDao {
 		
 		return this.user;
 	}
-	
-	
 	
 }
