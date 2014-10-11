@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 
 import springbook.user.domain.User;
@@ -16,6 +18,7 @@ public class UserDao {
 	private ConnectionMaker connectionMaker;
 	private Connection c;
 	private User user;
+	private DataSource dataSource;
 	
 	public void setConnectionMaker(ConnectionMaker connectionMaker) {
 		this.connectionMaker = connectionMaker;
@@ -32,21 +35,20 @@ public class UserDao {
 		return userDao;
 	}
 	
-	public UserDao(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
+	public UserDao(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 	
-/*	public static synchronized UserDao getInstance() {
-		if (INSTANCE == null) INSTANCE = new UserDao(???);
-		return INSTANCE;
-	}*/
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 	
 	public ConnectionMaker connectionMaker() {
 		return new DConnectionMaker();
 	}
 	
 	public void add(User user) throws ClassNotFoundException, SQLException {
-		this.c = connectionMaker.makeConnection();
+		this.c = dataSource.getConnection();
 		
 		PreparedStatement ps = c.prepareStatement(
 				"INSERT INTO USERS(ID, NAME, PASSWORD) VALUES(?,?,?)");
@@ -63,7 +65,7 @@ public class UserDao {
 	}
 	
 	public User get(String id) throws ClassNotFoundException, SQLException {
-		this.c = connectionMaker.makeConnection();
+		this.c = dataSource.getConnection();
 		
 		PreparedStatement ps = c.prepareStatement(
 				"SELECT * FROM USERS WHERE ID = ?");
