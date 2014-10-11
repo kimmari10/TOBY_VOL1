@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.context.annotation.Bean;
+
 import springbook.user.domain.User;
 
 
@@ -15,13 +17,32 @@ public class UserDao {
 	private Connection c;
 	private User user;
 	
+	public void setConnectionMaker(ConnectionMaker connectionMaker) {
+		this.connectionMaker = connectionMaker;
+	}
+	
+	public UserDao() {
+		connectionMaker = new DConnectionMaker();
+	}
+	
+	@Bean
+	public UserDao userDao() {
+		UserDao userDao = new UserDao();
+		userDao.setConnectionMaker(connectionMaker());
+		return userDao;
+	}
+	
 	public UserDao(ConnectionMaker connectionMaker) {
 		this.connectionMaker = connectionMaker;
 	}
 	
-	public static synchronized UserDao getInstance() {
+/*	public static synchronized UserDao getInstance() {
 		if (INSTANCE == null) INSTANCE = new UserDao(???);
 		return INSTANCE;
+	}*/
+	
+	public ConnectionMaker connectionMaker() {
+		return new DConnectionMaker();
 	}
 	
 	public void add(User user) throws ClassNotFoundException, SQLException {
