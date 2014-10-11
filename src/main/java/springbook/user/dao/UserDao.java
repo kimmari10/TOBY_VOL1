@@ -58,6 +58,7 @@ public class UserDao {
 		ps.setString(3, user.getPassword());
 		
 		ps.executeUpdate();
+		System.out.println("등록 성공");
 		
 		ps.close();
 		this.c.close();
@@ -79,6 +80,8 @@ public class UserDao {
 		this.user.setId(rs.getString("id"));
 		this.user.setName(rs.getString("name"));
 		this.user.setPassword(rs.getString("password"));
+		
+		System.out.println("조회 성공");
 		
 		rs.close();
 		ps.close();

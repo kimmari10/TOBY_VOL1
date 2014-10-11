@@ -23,11 +23,19 @@ public class UserDaoTest {
 		user1.setPassword("pass");
 		
 		dao.add(user1);
-		User user2 = dao.get(user1.getId());
-
-		System.out.println(user2.getId());
-		System.out.println(user2.getName());
-		System.out.println(user2.getPassword());
+		
+		User user2 = new User();
+		user2 = dao.get(user1.getId());
+		
+		if(!user1.getName().equals(user2.getName())) {
+			System.out.println("테스트 실패 (name)");
+		}
+		else if (!user1.getPassword().equals(user2.getPassword())) {
+			System.out.println("테스트 실패 (password)");
+		}
+		else {
+			System.out.println("조회 테스트 성공");
+		}
 		
 	}
 
