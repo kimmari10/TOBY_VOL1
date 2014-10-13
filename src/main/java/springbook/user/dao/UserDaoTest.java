@@ -28,6 +28,10 @@ public class UserDaoTest {
 
 		
 		UserDao dao = context.getBean("userDao", UserDao.class);
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(), is(0));
+		
 		User user1 = new User();
 		
 		user1.setId("gyumee");
@@ -35,6 +39,7 @@ public class UserDaoTest {
 		user1.setPassword("springno1");
 		
 		dao.add(user1);
+		assertThat(dao.getCount(), is(1));
 		
 		User user2 = dao.get(user1.getId());
 		
