@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import springbook.user.domain.User;
@@ -15,25 +14,11 @@ import springbook.user.domain.User;
 
 public class UserDao {
 	
-	private static UserDao INSTANCE;
-	private ConnectionMaker connectionMaker;
 	private Connection c;
 	private User user;
 	private DataSource dataSource;
 	
-	public void setConnectionMaker(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
-	}
-	
 	public UserDao() {
-		connectionMaker = new DConnectionMaker();
-	}
-	
-	@Bean
-	public UserDao userDao() {
-		UserDao userDao = new UserDao();
-		userDao.setConnectionMaker(connectionMaker());
-		return userDao;
 	}
 	
 	public UserDao(DataSource dataSource) {
@@ -42,10 +27,6 @@ public class UserDao {
 	
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-	}
-	
-	public ConnectionMaker connectionMaker() {
-		return new DConnectionMaker();
 	}
 	
 	public void add(final User user) throws ClassNotFoundException, SQLException {
