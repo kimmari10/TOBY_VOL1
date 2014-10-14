@@ -50,6 +50,7 @@ public class UserDao {
 	
 	public User get(String id) throws ClassNotFoundException, SQLException {
 		this.c = dataSource.getConnection();
+
 		PreparedStatement ps = c.prepareStatement(
 				"SELECT * FROM USERS WHERE ID = ?");
 		ps.setString(1, id);
