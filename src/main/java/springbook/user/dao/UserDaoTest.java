@@ -25,6 +25,9 @@ import springbook.user.domain.User;
 public class UserDaoTest {
 	@Autowired
 	private UserDao dao;
+	@Autowired
+	private DataSource dataSource;
+	
 	private User user1;
 	private User user2;
 	private User user3;
@@ -109,9 +112,9 @@ public class UserDaoTest {
 	@Before
 	public void setUp() {
 //		this.dao = this.context.getBean("userDao", UserDao.class);
-		DataSource dataSource = new SingleConnectionDataSource(
+/*		DataSource dataSource = new SingleConnectionDataSource(
 				"jdbc:oracle:thin:@localhost:1521:orcl","JS","1111",true);
-		dao.setDataSource(dataSource);
+		dao.setDataSource(dataSource);*/
 		
 		this.user1 = new User("gyumee", "박성철", "springno1");
 		this.user2 = new User("leegw700", "이길원", "springno2");
