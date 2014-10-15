@@ -28,6 +28,8 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="C:/Users/JS/Downloads/org.springframework.jdbc-3.0.7.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/JS/Downloads/mysql-connector-java-5.1.0-bin.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

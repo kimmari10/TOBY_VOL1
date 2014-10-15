@@ -1,4 +1,5 @@
 package springbook.user.dao;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -12,7 +13,9 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,7 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import springbook.user.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/applicationContext.xml")
+@ContextConfiguration(locations="/mysql.xml")
 @DirtiesContext
 public class UserDaoTest {
 	@Autowired
@@ -77,7 +80,7 @@ public class UserDaoTest {
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 		
-		dao.get("unknown_id");
+//		dao.get("unknown_id");
 		
 	}
 	
@@ -129,5 +132,24 @@ public class UserDaoTest {
 		
 		
 	}
+	
+	/*@Test
+	public void sqlExceptionTranslate() {
+		dao.deleteAll();
+		
+		try {
+			dao.add(user1);
+			dao.add(user1);
+		}
+		catch(DuplicateKeyException ex) {
+			SQLException sqlEx = (SQLException)ex.getRootCause();
+			SQLExceptionTranslator set = 
+					new SQLErrorCodeSQLExceptionTranslator(this.dataSource);
+			
+			assertThat(set.translate(null, null, sqlEx), 
+					is(DuplicateKeyException.class));
+		}
+		
+	}*/
 	
 }
