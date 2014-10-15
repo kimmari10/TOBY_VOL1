@@ -5,3 +5,5 @@ create table users (
 )
 
 select * from users;
+desc users;
+alter table users drop column test ;
