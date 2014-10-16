@@ -20,6 +20,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,12 +36,12 @@ public class UserDaoTest {
 	private User user2;
 	private User user3;
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	public static void main(String[] args) {
 		JUnitCore.main("springbook.user.dao.UserDaoTest");
 	}
 	
 	@Test
-	public void addAndGet() throws ClassNotFoundException, SQLException {
+	public void addAndGet() {
 
 		
 		dao.deleteAll();
@@ -51,16 +52,14 @@ public class UserDaoTest {
 		assertThat(dao.getCount(), is(2));
 		
 		User userget1 = dao.get(user1.getId());
-		assertThat(userget1.getName(), is(user1.getName()));
-		assertThat(userget1.getPassword(), is(user1.getPassword()));
+		checkSameUser(userget1, user1);
 		
 		User userget2 = dao.get(user2.getId());
-		assertThat(userget2.getName(), is(user2.getName()));
-		assertThat(userget2.getPassword(), is(user2.getPassword()));
+		checkSameUser(userget2, user2);
 	}
 
 	@Test
-	public void count() throws SQLException, ClassNotFoundException {
+	public void count() {
 		
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
@@ -76,7 +75,7 @@ public class UserDaoTest {
 	}
 	
 	@Test
-	public void getUserFailure() throws SQLException, ClassNotFoundException {
+	public void getUserFailure() {
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 		
@@ -85,7 +84,7 @@ public class UserDaoTest {
 	}
 	
 	@Test
-	public void getAll() throws ClassNotFoundException, SQLException {
+	public void getAll() {
 		dao.deleteAll();
 		
 		List<User> users0 = dao.getAll();
@@ -119,9 +118,9 @@ public class UserDaoTest {
 				"jdbc:oracle:thin:@localhost:1521:orcl","JS","1111",true);
 		dao.setDataSource(dataSource);*/
 		
-		this.user1 = new User("gyumee", "박성철", "springno1");
-		this.user2 = new User("leegw700", "이길원", "springno2");
-		this.user3 = new User("bumjin", "박범진", "springno3");
+		this.user1 = new User("gyumee", "박성철", "springno1",Level.BASIC, 1, 0);
+		this.user2 = new User("leegw700", "이길원", "springno2", Level.BASIC, 55, 10);
+		this.user3 = new User("bumjin", "박범진", "springno3", Level.BASIC, 100, 40);
 	}
 	
 	
@@ -129,6 +128,9 @@ public class UserDaoTest {
 		assertThat(user1.getId(), is(user2.getId()));
 		assertThat(user1.getName(), is(user2.getName()));
 		assertThat(user1.getPassword(), is(user2.getPassword()));
+		assertThat(user1.getLevel(), is(user2.getLevel()));
+		assertThat(user1.getLogin(), is(user2.getLogin()));
+		assertThat(user1.getRecommend(), is(user2.getRecommend()));
 		
 		
 	}
