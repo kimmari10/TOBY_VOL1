@@ -38,7 +38,23 @@ public class UserServiceTest {
 				new User("madnite1", "이상호", "p4", Level.SILVER, 60, 30),
 				new User("green", "오민규", "p5", Level.GOLD, 100, 100));
 	}
-	
+	@Test
+	public void add() {
+		userDao.deleteAll();
+		
+		User userWithLevel = users.get(4); //GOLD 레벨
+		User userWithoutLevel = users.get(0);
+		userWithoutLevel.setLevel(null);
+		
+		userService.add(userWithLevel);
+		userService.add(userWithoutLevel);
+		
+		User userWithLevelRead = userDao.get(userWithLevel.getId());
+		User userWithoutLevelRead = userDao.get(userWithoutLevel.getId());
+		
+		assertThat(userWithLevelRead.getLevel(), is(userWithLevel.getLevel()));
+		assertThat(userWithoutLevelRead.getLevel(), is(userWithoutLevel.getLevel()));
+	}
 	@Test
 	public void upgradeLevels() {
 		userDao.deleteAll();
