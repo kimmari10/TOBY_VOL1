@@ -1,5 +1,7 @@
 package springbook.user.domain;
 
+import java.util.Date;
+
 public class User {
 	String id;
 	String name;
@@ -8,6 +10,8 @@ public class User {
 	Level level;
 	int login;
 	int recommend;
+	
+	Date lastUpgraded;
 	
 	private static final int BASIC = 1;
 	private static final int SILVER = 2;
@@ -74,5 +78,15 @@ public class User {
 	}
 	
 	
+	public void upgradeLevel() {
+		Level nextLevel = this.level.nextLevel();
+		if(nextLevel == null) {
+			throw new IllegalStateException(this.level + "은 업그레이드가 불가능합니다");
+		}
+		else {
+			this.level = nextLevel;
+		}
+		lastUpgraded = new Date();
+	}
 
 }
