@@ -15,6 +15,8 @@ import springbook.user.domain.User;
 
 public class UserService {
 	private DataSource dataSource;
+	private PlatformTransactionManager transactionManager;
+	
 	UserDao userDao;
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	public static final int MIN_RECCOMEND_FOR_GOLD = 30;
@@ -26,14 +28,14 @@ public class UserService {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+	
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
+	}
 
 	public void upgradeLevels() throws Exception {
-		PlatformTransactionManager transactionManager = 
-				new DataSourceTransactionManager(dataSource);
-		//JDBC 트랜잭션 추상 오브젝트 생성
-		
 		TransactionStatus status = 
-				transactionManager.getTransaction(new DefaultTransactionDefinition());
+				this.transactionManager.getTransaction(new DefaultTransactionDefinition());
 		//트랜잭션 시작
 		
 		try {
@@ -43,10 +45,10 @@ public class UserService {
 					upgradeLevel(user);
 				}
 			}
-			transactionManager.commit(status);
+			this.transactionManager.commit(status);
 			
 		} catch (RuntimeException e) {
-			transactionManager.rollback(status);
+			this.transactionManager.rollback(status);
 			throw e;
 		} 
 		
