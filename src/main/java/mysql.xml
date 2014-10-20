@@ -20,6 +20,9 @@
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	    <property name="host" value="mail.server.com" />
+	</bean>
 </beans>
 
 <!-- JTA TransactionManager 로 변경시 

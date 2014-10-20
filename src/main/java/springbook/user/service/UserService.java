@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.sql.DataSource;
 
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -23,12 +24,18 @@ import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 public class UserService {
+	private MailSender mailSender;
 	private DataSource dataSource;
 	private PlatformTransactionManager transactionManager;
 	
 	UserDao userDao;
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	public static final int MIN_RECCOMEND_FOR_GOLD = 30;
+	
+	
+	public void setMailSender(MailSender mailSender) {
+		this.mailSender = mailSender;
+	}
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -76,7 +83,7 @@ public class UserService {
 	protected void upgradeLevel(User user) {
 		user.upgradeLevel();
 		userDao.update(user);
-		sendUpgradeEMail(user);
+//		sendUpgradeEMail(user);
 	}
 	
 	public void add(User user) {
@@ -86,8 +93,6 @@ public class UserService {
 	
 	
 	private void sendUpgradeEMail(User user) {
-		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("mail.server.com"); //메일서버 설정
 		
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(user.getEmail()); //보낼 메일 계정
@@ -95,7 +100,7 @@ public class UserService {
 		mailMessage.setSubject("Subject");
 		mailMessage.setText("your level is" + user.getLevel().name());
 		
-		mailSender.send(mailMessage);
+		this.mailSender.send(mailMessage);
 		
 		//스프링메일을 사용하지 않은 코드
 		/*
