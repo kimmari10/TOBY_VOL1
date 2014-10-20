@@ -1,6 +1,5 @@
 package springbook.user.service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Properties;
 
@@ -13,6 +12,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.sql.DataSource;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -83,7 +84,21 @@ public class UserService {
 		userDao.add(user);
 	}
 	
+	
 	private void sendUpgradeEMail(User user) {
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		mailSender.setHost("mail.server.com"); //메일서버 설정
+		
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(user.getEmail()); //보낼 메일 계정
+		mailMessage.setFrom("kimmari10@naver.com"); //보내는사람
+		mailMessage.setSubject("Subject");
+		mailMessage.setText("your level is" + user.getLevel().name());
+		
+		mailSender.send(mailMessage);
+		
+		//스프링메일을 사용하지 않은 코드
+		/*
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "mail.ksug.org");
 		Session s = Session.getInstance(props, null);
@@ -100,7 +115,7 @@ public class UserService {
 			throw new RuntimeException(e);
 		} catch (MessagingException e) {
 			throw new RuntimeException(e); 
-		}/* catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}*/
 	}

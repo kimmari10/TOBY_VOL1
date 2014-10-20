@@ -142,9 +142,9 @@ public class UserDaoTest {
 				"jdbc:oracle:thin:@localhost:1521:orcl","JS","1111",true);
 		dao.setDataSource(dataSource);*/
 		
-		this.user1 = new User("gyumee", "박성철", "springno1",Level.BASIC, 1, 0);
-		this.user2 = new User("leegw700", "이길원", "springno2", Level.BASIC, 55, 10);
-		this.user3 = new User("bumjin", "박범진", "springno3", Level.BASIC, 100, 40);
+		this.user1 = new User("gyumee", "박성철", "springno1",Level.BASIC, 1, 0, "kim@naver.com");
+		this.user2 = new User("leegw700", "이길원", "springno2", Level.BASIC, 55, 10, "kim@gmail.com");
+		this.user3 = new User("bumjin", "박범진", "springno3", Level.BASIC, 100, 40 ,"lee@naver.com");
 	}
 	
 	
