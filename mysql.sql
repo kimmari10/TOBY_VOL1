@@ -9,3 +9,5 @@ desc users;
 alter table users drop column test ;
 
 alter table users engine = InnoDB;
+
+alter table users add column email varchar(30) not null;

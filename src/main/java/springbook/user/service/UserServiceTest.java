@@ -6,7 +6,6 @@ import static org.junit.Assert.fail;
 import static springbook.user.service.UserService.MIN_LOGCOUNT_FOR_SILVER;
 import static springbook.user.service.UserService.MIN_RECCOMEND_FOR_GOLD;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,10 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailMessage;
 import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -79,7 +75,9 @@ public class UserServiceTest {
 	@DirtiesContext
 	public void upgradeLevels() throws Exception {
 		userDao.deleteAll();
-		for(User user : users) userDao.add(user);
+		for(User user : users) {
+			userDao.add(user);
+		}
 		
 		MockMailSender mockMailSender = new MockMailSender();
 		userService.setMailSender(mockMailSender);
@@ -132,22 +130,7 @@ public class UserServiceTest {
 			super.upgradeLevel(user);
 		}
 	}
-	
-	public class MockMailSender implements MailSender {
-		private List<String> requests = new ArrayList<String>();
-		
-		public List<String> getRequests() {
-			return requests;
-		}
 
-		public void send(SimpleMailMessage simpleMessage) throws MailException {
-			requests.add(simpleMessage.getTo()[0]);
-		}
-
-		public void send(SimpleMailMessage[] simpleMessages)
-				throws MailException {
-		}
-	}
 
 
 	private void checkLevel(User user, Level expectedLevel) {
