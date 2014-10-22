@@ -83,7 +83,7 @@ public class UserService {
 	protected void upgradeLevel(User user) {
 		user.upgradeLevel();
 		userDao.update(user);
-//		sendUpgradeEMail(user);
+		sendUpgradeEMail(user);
 	}
 	
 	public void add(User user) {
