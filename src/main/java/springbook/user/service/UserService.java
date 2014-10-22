@@ -55,19 +55,22 @@ public class UserService {
 		//트랜잭션 시작
 		
 		try {
-			List<User> users = userDao.getAll();
-			for(User user : users) {
-				if(canUpgradeLevel(user)) {
-					upgradeLevel(user);
-				}
-			}
+			upgradeLevelsInternal();
 			this.transactionManager.commit(status);
-			
-		} catch (RuntimeException e) {
+		} catch (Exception e) {
 			this.transactionManager.rollback(status);
 			throw e;
 		} 
-		
+	}
+	
+	//분리된 비즈니스 로직 코드. 트랜잭션 적용하기 전과 동일
+	private void upgradeLevelsInternal() {
+		List<User> users = userDao.getAll();
+		for (User user : users) {
+			if(canUpgradeLevel(user)) {
+				upgradeLevel(user);
+			}
+		}
 	}
 	
 	private boolean canUpgradeLevel(User user) {
