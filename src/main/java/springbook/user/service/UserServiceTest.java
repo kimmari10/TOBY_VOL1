@@ -1,6 +1,7 @@
 package springbook.user.service;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.*; 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static springbook.user.service.UserServiceImpl.MIN_LOGCOUNT_FOR_SILVER;
@@ -14,9 +15,10 @@ import javax.sql.DataSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -122,6 +124,38 @@ public class UserServiceTest {
 		
 		checkLevelUpgraded(users.get(1), false);
 		
+	}
+	
+	@Test
+	public void mockUpgradeLevels() throws Exception {
+		UserServiceImpl userServiceImpl = new UserServiceImpl();
+		
+		//Mock오브젝트는 스태틱 메소드 한번 호출로 생성
+		UserDao mockUserDao = mock(UserDao.class);
+		
+		//mockUserDao.getAll()이 호출 됐을 때(when) this.users를 리턴
+		when(mockUserDao.getAll()).thenReturn(this.users);
+		userServiceImpl.setUserDao(mockUserDao);
+		
+		MailSender mockMailSender = mock(MailSender.class);
+		userServiceImpl.setMailSender(mockMailSender);
+		
+		userServiceImpl.upgradeLevels();
+		
+		//User타입의 오브젝트를 파라미터로 받으며 update가 2번 실행 됐는지 확인한다
+		verify(mockUserDao, times(2)).update(any(User.class));
+		
+		verify(mockUserDao).update(users.get(1));
+		assertThat(users.get(1).getLevel(), is(Level.SILVER));
+		verify(mockUserDao).update(users.get(3));
+		assertThat(users.get(3).getLevel(), is(Level.GOLD));
+		
+		ArgumentCaptor<SimpleMailMessage> mailMessageArg = 
+				ArgumentCaptor.forClass(SimpleMailMessage.class);
+		verify(mockMailSender, times(2)).send(mailMessageArg.capture());
+		List<SimpleMailMessage> mailMessages = mailMessageArg.getAllValues();
+		assertThat(mailMessages.get(0).getTo()[0], is(users.get(1).getEmail()));
+		assertThat(mailMessages.get(1).getTo()[0], is(users.get(3).getEmail()));
 	}
 	
 	static class TestUserService extends UserServiceImpl {
