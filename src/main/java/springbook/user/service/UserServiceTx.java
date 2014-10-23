@@ -25,7 +25,7 @@ public class UserServiceTx implements UserService{
 	public void upgradeLevels() {
 		TransactionStatus status = 
 				this.transactionManager.getTransaction(new DefaultTransactionDefinition());
-		
+
 		try {
 			userService.upgradeLevels();	
 			this.transactionManager.commit(status);
