@@ -29,7 +29,16 @@ public class ReflectionTest {
 	}
 	
 	@Test
-	public void simpleProxy() {
+	public void upperProxy() {
+		Hello hello = new HelloUppercase(new HelloTarget());
+		assertThat(hello.sayHello("Toby"), is("HELLO TOBY"));
+		assertThat(hello.sayHi("Toby"), is("HI TOBY"));
+		assertThat(hello.sayThankYou("Toby"), is("THANKYOU TOBY"));
+	}
+	
+	
+	@Test
+	public void dynamicProxy() {
 		//생성된 다이나믹 프록시 오브젝트는 Hello 인터페이스를 구현하고 있으므로 Hello 타입으로 캐스팅해도 안전
 		Hello proxiedHello = (Hello) Proxy.newProxyInstance(
 				//동적으로 생성되는 다이나믹 프록시 클래스의 로딩에 사용할 클래스 로더
