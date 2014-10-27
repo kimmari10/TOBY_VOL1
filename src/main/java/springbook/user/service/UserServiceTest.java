@@ -7,10 +7,12 @@ import static org.junit.Assert.fail;
 import static springbook.user.service.UserServiceImpl.MIN_LOGCOUNT_FOR_SILVER;
 import static springbook.user.service.UserServiceImpl.MIN_RECCOMEND_FOR_GOLD;
 
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import springbook.learningtest.jdk.TransactionHandler;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
@@ -108,9 +111,19 @@ public class UserServiceTest {
 		testUserService.setUserDao(userDao);
 		testUserService.setMailSender(mailSender);
 		
-		UserServiceTx txUserService = new UserServiceTx();
-		txUserService.setTransactionManager(transactionManager);
-		txUserService.setUserService(testUserService);
+//		UserServiceTx txUserService = new UserServiceTx();
+//		txUserService.setTransactionManager(transactionManager);
+//		txUserService.setUserService(testUserService);
+		
+		//Transaction proxy를 적용한 코드
+		TransactionHandler txHandler = new TransactionHandler();
+		txHandler.setTarget(testUserService);
+		txHandler.setTransactionManager(transactionManager);
+		txHandler.setPattern("upgradeLevels");
+		UserService txUserService = (UserService) Proxy.newProxyInstance(
+				getClass().getClassLoader(),
+				new Class[] {UserService.class},
+				txHandler);
 		
 		userDao.deleteAll();
 		for(User user : users) userDao.add(user);
