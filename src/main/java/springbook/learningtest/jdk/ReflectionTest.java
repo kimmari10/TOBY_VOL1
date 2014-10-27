@@ -6,7 +6,10 @@ import static org.junit.Assert.assertThat;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
+import org.springframework.aop.framework.ProxyFactoryBean;
 
 public class ReflectionTest {
 
@@ -52,6 +55,27 @@ public class ReflectionTest {
 		assertThat(proxiedHello.sayHi("Toby"), is("HI TOBY"));
 		assertThat(proxiedHello.sayThankYou("Toby"), is("THANKYOU TOBY"));
 				
+	}
+	
+	@Test
+	public void proxyFactoryBean() {
+		ProxyFactoryBean pfBean = new ProxyFactoryBean();
+		pfBean.setTarget(new HelloTarget());
+		pfBean.addAdvice(new UppercaseAdvice());
+		
+		Hello proxiedHello = (Hello) pfBean.getObject();
+		
+		assertThat(proxiedHello.sayHello("Toby"), is("HELLO TOBY"));
+		assertThat(proxiedHello.sayHi("Toby"), is("HI TOBY"));
+		assertThat(proxiedHello.sayThankYou("Toby"), is("THANKYOU TOBY"));
+		
+	}
+	
+	static class UppercaseAdvice implements MethodInterceptor {
+		public Object invoke(MethodInvocation invocation)throws Throwable {
+			String ret = (String) invocation.proceed();
+			return ret.toUpperCase();
+		}
 	}
 	
 }

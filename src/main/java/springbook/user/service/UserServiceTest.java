@@ -69,8 +69,6 @@ public class UserServiceTest {
 				new User("erwins", "신승한", "p3", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD-1, "aa@naver.com"),
 				new User("madnite1", "이상호", "p4", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD, "abc@naver.com"),
 				new User("green", "오민규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "ss@naver.com"));
-		Date now = new Date();
-		System.out.println(now);
 	}
 	@Test
 	public void add() {
