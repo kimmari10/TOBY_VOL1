@@ -1,18 +1,22 @@
 package springbook.user.service;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.*; 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static springbook.user.service.UserServiceImpl.MIN_LOGCOUNT_FOR_SILVER;
 import static springbook.user.service.UserServiceImpl.MIN_RECCOMEND_FOR_GOLD;
 
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -60,6 +64,8 @@ public class UserServiceTest {
 				new User("erwins", "신승한", "p3", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD-1, "aa@naver.com"),
 				new User("madnite1", "이상호", "p4", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD, "abc@naver.com"),
 				new User("green", "오민규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "ss@naver.com"));
+		Date now = new Date();
+		System.out.println(now);
 	}
 	@Test
 	public void add() {
