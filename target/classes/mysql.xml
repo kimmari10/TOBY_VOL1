@@ -10,15 +10,8 @@
     	<property name="username" value="js" />
     	<property name="password" value="kim" />
     </bean>
-    <bean id="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="target" ref="userServiceImpl" />
-		<property name="interceptorNames">
-		    <list>
-		        <value>transactionAdvisor</value>
-		    </list>
-		</property>
-    </bean>
-    <bean id="userServiceImpl" class="springbook.user.service.UserServiceImpl">
+
+    <bean id="userService" class="springbook.user.service.UserServiceImpl">
         <property name="userDao" ref="userDao" />
         <property name="mailSender" ref="mailSender" />
     </bean>
@@ -42,6 +35,8 @@
 	    <property name="mappedClassName" value="*ServiceImpl" />
 	    <property name="mappedName" value="upgrade*" />
 	</bean>
+	<bean id="testUserService" class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
+	    parent="userService" />
 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 </beans>
 

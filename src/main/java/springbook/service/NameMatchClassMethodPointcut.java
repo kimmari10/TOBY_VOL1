@@ -1,4 +1,4 @@
-package springbook.learningtest.jdk.proxy;
+package springbook.service;
 
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.support.NameMatchMethodPointcut;

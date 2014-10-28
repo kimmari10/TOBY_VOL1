@@ -35,26 +35,21 @@ import springbook.user.domain.Level;
 import springbook.user.domain.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/mysql.xml")
+
 public class UserServiceTest {
-	@Autowired
+	@Autowired 
 	UserService userService;
-	
-	@Autowired
+	@Autowired 
+	UserService testUserService;
+	@Autowired 
 	ApplicationContext context;
-	
-	@Autowired
-	UserServiceImpl userServiceImpl;
-	
-	@Autowired
+	@Autowired 
 	DataSource dataSource;
-	
-	@Autowired
+	@Autowired 
 	PlatformTransactionManager transactionManager;
-	
-	@Autowired
+	@Autowired 
 	UserDao userDao;
-	
-	@Autowired
+	@Autowired 
 	MailSender mailSender;
 	
 	List<User> users;
@@ -115,14 +110,14 @@ public class UserServiceTest {
 	@Test
 	@DirtiesContext
 	public void upgradeAllOrNothing() throws Exception {
-		TestUserService testUserService = new TestUserService(users.get(3).getId());
-		testUserService.setUserDao(userDao);
-		testUserService.setMailSender(mailSender);
-		
-		ProxyFactoryBean txProxyFactoryBean =
-				context.getBean("&userService", ProxyFactoryBean.class);
-		txProxyFactoryBean.setTarget(testUserService);
-		UserService txUserService = (UserService) txProxyFactoryBean.getObject();
+//		TestUserService testUserService = new TestUserService(users.get(3).getId());
+//		testUserService.setUserDao(userDao);
+//		testUserService.setMailSender(mailSender);
+//		
+//		ProxyFactoryBean txProxyFactoryBean =
+//				context.getBean("&userService", ProxyFactoryBean.class);
+//		txProxyFactoryBean.setTarget(testUserService);
+//		UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 		
 //		UserServiceTx txUserService = new UserServiceTx();
 //		txUserService.setTransactionManager(transactionManager);
@@ -142,7 +137,7 @@ public class UserServiceTest {
 		for(User user : users) userDao.add(user);
 		
 		try {
-			txUserService.upgradeLevels();
+			this.testUserService.upgradeLevels();
 			fail("TestUserServiceException expected");
 		}
 		catch(TestUserServiceException e) {
@@ -184,12 +179,8 @@ public class UserServiceTest {
 		assertThat(mailMessages.get(1).getTo()[0], is(users.get(3).getEmail()));
 	}
 	
-	static class TestUserService extends UserServiceImpl {
-		private String id;
-		
-		private TestUserService(String id) {
-			this.id = id;
-		}
+	static class TestUserServiceImpl extends UserServiceImpl {
+		private String id = "madnite1";
 		
 		protected void upgradeLevel(User user) {
 			if(user.getId().equals(this.id)) throw new TestUserServiceException();
