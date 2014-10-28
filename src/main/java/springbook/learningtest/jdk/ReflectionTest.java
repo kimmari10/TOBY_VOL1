@@ -3,7 +3,6 @@ package springbook.learningtest.jdk;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -16,6 +15,8 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
+
+import springbook.learningtest.spring.pointcut.Target;
 
 public class ReflectionTest {
 
