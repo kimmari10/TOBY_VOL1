@@ -16,6 +16,7 @@ import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 
+import springbook.learningtest.spring.pointcut.Bean;
 import springbook.learningtest.spring.pointcut.Target;
 
 public class ReflectionTest {
@@ -134,9 +135,8 @@ public class ReflectionTest {
 	@Test
 	public void methodSignaturePointcut() throws SecurityException, NoSuchMethodException {
 		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-		pointcut.setExpression("execution(int minus(int, int))");
+		pointcut.setExpression("execution(* *(..))");
 		
-		System.out.println(pointcut.getMethodMatcher().matches(Target.class.getMethod("minus", int.class, int.class), null));
 		//Target.minus()
 		assertThat(pointcut.getClassFilter().matches(
 				Target.class) && pointcut.getMethodMatcher().matches(
@@ -145,7 +145,30 @@ public class ReflectionTest {
 		//Target.plus()
 		assertThat(pointcut.getClassFilter().matches(Target.class) &&
 				pointcut.getMethodMatcher().matches(
-					Target.class.getMethod("plus", int.class, int.class), null), is(false));
+					Target.class.getMethod("plus", int.class, int.class), null), is(true));
+	}
+	
+	@Test
+	public void pointcut() throws Exception {
+		targetClassPointcutMatches("execution(* *(..))",true, true, true, true, true, true);
+		//다양한 표현식에 맞추어 실행(반환값, 패키지, 클래스, 메소드명, 파라미터, 예외)
+	}
+	
+	public void targetClassPointcutMatches(String expression, boolean... expected)throws Exception {
+		pointcutMatches(expression, expected[0], Target.class, "hello");
+		pointcutMatches(expression, expected[1], Target.class, "hello", String.class);
+		pointcutMatches(expression, expected[2], Target.class, "plus", int.class, int.class);
+		pointcutMatches(expression, expected[3], Target.class, "minus", int.class, int.class);
+		pointcutMatches(expression, expected[4], Target.class, "method");
+		pointcutMatches(expression, expected[5], Bean.class, "method");
+	}
+	
+	public void pointcutMatches(String expression, boolean expected, Class<?> clazz, String methodName, Class<?>... args) throws Exception {
+		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+		pointcut.setExpression(expression);
+		
+		assertThat(pointcut.getClassFilter().matches(clazz) 
+				&& pointcut.getMethodMatcher().matches(clazz.getMethod(methodName, args), null) , is(expected));
 	}
 	
 	private void checkAdviced(Object target, Pointcut pointcut, boolean adviced) {
