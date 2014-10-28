@@ -9,6 +9,8 @@ import java.lang.reflect.Proxy;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
+import org.springframework.aop.ClassFilter;
+import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
@@ -97,6 +99,47 @@ public class ReflectionTest {
 		assertThat(proxiedHello.sayHello("Toby"), is("HELLO TOBY"));
 		assertThat(proxiedHello.sayHi("Toby"), is("HI TOBY"));
 		assertThat(proxiedHello.sayThankYou("Toby"), is("ThankYou Toby"));
+	}
+	
+	@Test
+	public void classNamePointcutAdvisor() {
+		// 포인트컷 준비
+		NameMatchMethodPointcut classMethodPointcut = new NameMatchMethodPointcut() {
+			public ClassFilter getClassFilter() {
+				return new ClassFilter() {
+					public boolean matches(Class<?> clazz) {
+						//class 이름이 HelloT로 시작하는 것만 선정
+						return clazz.getSimpleName().startsWith("HelloT");
+					}
+				};
+			}
+		};
+		classMethodPointcut.setMappedName("sayH*");
+		
+		// 테스트
+		checkAdviced(new HelloTarget(), classMethodPointcut, true);
+		
+		//비적용클래스
+		class HelloWorld extends HelloTarget {};
+		checkAdviced(new HelloWorld(), classMethodPointcut, false);
+		
+		class HelloToby extends HelloTarget {};
+		checkAdviced(new HelloToby(), classMethodPointcut, true);
+		
+	}
+	
+	private void checkAdviced(Object target, Pointcut pointcut, boolean adviced) {
+		ProxyFactoryBean pfBean = new ProxyFactoryBean();
+		pfBean.setTarget(target);
+		pfBean.addAdvisor(new DefaultPointcutAdvisor(pointcut, new UppercaseAdvice()));
+		Hello proxiedHello = (Hello)pfBean.getObject();
+		
+		if(adviced) {
+			assertThat(proxiedHello.sayHello("Toby"), is("HELLO TOBY"));
+			assertThat(proxiedHello.sayHi("Toby"), is("HI TOBY"));
+			assertThat(proxiedHello.sayThankYou("Toby"), is("ThankYou Toby"));
+			
+		}
 	}
 	
 }
