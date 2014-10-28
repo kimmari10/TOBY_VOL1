@@ -34,13 +34,15 @@
 	<bean id="transactionAdvice" class="springbook.learningtest.jdk.proxy.TransactionAdvice">
 	    <property name="transactionManager" ref="transactionManager" />
 	</bean>
-	<bean id="transactionPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
-		<property name="mappedName" value="upgrade*" />    
-	</bean>
 	<bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
 	    <property name="advice" ref="transactionAdvice" />
 	    <property name="pointcut" ref="transactionPointcut" />
 	</bean>
+	<bean id="transactionPointcut" class="springbook.service.NameMatchClassMethodPointcut">
+	    <property name="mappedClassName" value="*ServiceImpl" />
+	    <property name="mappedName" value="upgrade*" />
+	</bean>
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 </beans>
 
 <!-- JTA TransactionManager 로 변경시 
