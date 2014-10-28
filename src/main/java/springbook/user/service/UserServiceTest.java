@@ -163,6 +163,7 @@ public class UserServiceTest {
 		
 		userServiceImpl.upgradeLevels();
 		
+		
 		//User타입의 오브젝트를 파라미터로 받으며 update가 2번 실행 됐는지 확인한다
 		verify(mockUserDao, times(2)).update(any(User.class));
 		
@@ -177,6 +178,11 @@ public class UserServiceTest {
 		List<SimpleMailMessage> mailMessages = mailMessageArg.getAllValues();
 		assertThat(mailMessages.get(0).getTo()[0], is(users.get(1).getEmail()));
 		assertThat(mailMessages.get(1).getTo()[0], is(users.get(3).getEmail()));
+	}
+	
+	@Test
+	public void advisorAutoProxyCreator() {
+		assertThat(testUserService, is(java.lang.reflect.Proxy.class));
 	}
 	
 	static class TestUserServiceImpl extends UserServiceImpl {

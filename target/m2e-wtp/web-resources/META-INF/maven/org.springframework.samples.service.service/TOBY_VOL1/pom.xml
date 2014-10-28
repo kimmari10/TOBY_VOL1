@@ -144,10 +144,5 @@
 			<version>1.9.5</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>3.2.3.RELEASE</version>
-		</dependency>
 	</dependencies>
 </project>

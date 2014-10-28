@@ -3,6 +3,7 @@ package springbook.learningtest.jdk;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -11,6 +12,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.Pointcut;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
@@ -126,6 +128,23 @@ public class ReflectionTest {
 		class HelloToby extends HelloTarget {};
 		checkAdviced(new HelloToby(), classMethodPointcut, true);
 		
+	}
+	
+	@Test
+	public void methodSignaturePointcut() throws SecurityException, NoSuchMethodException {
+		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+		pointcut.setExpression("execution(int minus(int, int))");
+		
+		System.out.println(pointcut.getMethodMatcher().matches(Target.class.getMethod("minus", int.class, int.class), null));
+		//Target.minus()
+		assertThat(pointcut.getClassFilter().matches(
+				Target.class) && pointcut.getMethodMatcher().matches(
+					Target.class.getMethod("minus", int.class, int.class),null), is(true));
+		
+		//Target.plus()
+		assertThat(pointcut.getClassFilter().matches(Target.class) &&
+				pointcut.getMethodMatcher().matches(
+					Target.class.getMethod("plus", int.class, int.class), null), is(false));
 	}
 	
 	private void checkAdviced(Object target, Pointcut pointcut, boolean adviced) {
