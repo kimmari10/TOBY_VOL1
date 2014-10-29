@@ -15,6 +15,9 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.sun.mail.util.BEncoderStream;
 
 import springbook.learningtest.spring.pointcut.Bean;
 import springbook.learningtest.spring.pointcut.Target;
@@ -152,8 +155,9 @@ public class ReflectionTest {
 	public void pointcut() throws Exception {
 		targetClassPointcutMatches("execution(* *(..))",true, true, true, true, true, true);
 		//다양한 표현식에 맞추어 실행(반환값, 패키지, 클래스, 메소드명, 파라미터, 예외)
+		
 	}
-	
+
 	public void targetClassPointcutMatches(String expression, boolean... expected)throws Exception {
 		pointcutMatches(expression, expected[0], Target.class, "hello");
 		pointcutMatches(expression, expected[1], Target.class, "hello", String.class);

@@ -31,10 +31,13 @@
 	    <property name="advice" ref="transactionAdvice" />
 	    <property name="pointcut" ref="transactionPointcut" />
 	</bean>
-	<bean id="transactionPointcut" class="springbook.service.NameMatchClassMethodPointcut">
+	<bean id="transactionPointcut" class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
+	    <property name="expression" value="execution(* *..*ServiceImpl.upgrade*(..))" />
+	</bean>
+	<!-- <bean id="transactionPointcut" class="springbook.service.NameMatchClassMethodPointcut">
 	    <property name="mappedClassName" value="*ServiceImpl" />
 	    <property name="mappedName" value="upgrade*" />
-	</bean>
+	</bean> -->
 	<bean id="testUserService" class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
 	    parent="userService" />
 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
