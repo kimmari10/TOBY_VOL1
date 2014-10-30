@@ -39,8 +39,7 @@
 	</bean> -->
 	
 	<aop:config>
-	    <aop:pointcut id="transactionPointcut" expression="execution(* *..*Serviceimpl.upgrade*(..))" />
-	    <aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut" />
+	    <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* *..*Serviceimpl.upgrade*(..))" />
 	</aop:config>
 	
 	<bean id="testUserService" class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
