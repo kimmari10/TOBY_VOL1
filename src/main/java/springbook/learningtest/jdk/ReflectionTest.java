@@ -6,6 +6,8 @@ import static org.junit.Assert.assertThat;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import javax.transaction.TransactionManager;
+
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.mail.util.BEncoderStream;
@@ -39,7 +42,6 @@ public class ReflectionTest {
 		
 		Method charAtMethod = String.class.getMethod("charAt", int.class);
 		assertThat((Character)charAtMethod.invoke(name, 0), is('S'));
-		
 	}
 	
 	@Test
