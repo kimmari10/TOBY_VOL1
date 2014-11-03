@@ -30,7 +30,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
@@ -185,6 +187,24 @@ public class UserServiceTest {
 	@Test
 	public void advisorAutoProxyCreator() {
 		assertThat(testUserService, is(java.lang.reflect.Proxy.class));
+	}
+	
+	@Test
+	public void transactionSync() {
+		userDao.deleteAll();
+		assertThat(userDao.getCount(), is(0));
+		
+		DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
+		TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
+				
+		
+		userService.add(users.get(0));
+		userService.add(users.get(1));
+		assertThat(userDao.getCount(), is(2));
+		
+		transactionManager.rollback(txStatus);
+		
+		assertThat(userDao.getCount(), is(0));
 	}
 	
 	static class TestUserServiceImpl extends UserServiceImpl {
