@@ -84,4 +84,20 @@ public class UserServiceImpl implements UserService{
 		
 		this.mailSender.send(mailMessage);
 	}
+
+	public User get(String id) {
+		return userDao.get(id);
+	}
+
+	public List<User> getAll() {
+		return userDao.getAll();
+	}
+
+	public void deleteAll() {
+		userDao.deleteAll();
+	}
+
+	public void update(User user) {
+		userDao.update(user);
+	}
 }
