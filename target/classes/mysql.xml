@@ -40,7 +40,7 @@
 	        </props>
 	    </property>
 	</bean> -->
-	<aop:config>
+<!-- 	<aop:config>
 	    <aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
 	</aop:config>
 	
@@ -49,7 +49,9 @@
 	      <tx:method name="get*" read-only="true" />
 		  <tx:method name="*"/>  
 	  </tx:attributes>  
-	</tx:advice>
+	</tx:advice> -->
+	
+	<tx:annotation-driven/>
 	
 	
 	<bean id="testUserService" class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
