@@ -13,6 +13,38 @@ import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 public class UserDaoJdbc implements UserDao{
+	private String sqlAdd;
+	private String sqlUpdate;
+	private String sqlGet;
+	private String sqlGetAll;
+	private String sqlDeleteAll;
+	private String sqlGetCount;
+	
+	
+	
+	public void setSqlAdd(String sqlAdd) {
+		this.sqlAdd = sqlAdd;
+	}
+
+	public void setSqlUpdate(String sqlUpdate) {
+		this.sqlUpdate = sqlUpdate;
+	}
+
+	public void setSqlGet(String sqlGet) {
+		this.sqlGet = sqlGet;
+	}
+
+	public void setSqlGetAll(String sqlGetAll) {
+		this.sqlGetAll = sqlGetAll;
+	}
+
+	public void setSqlDeleteAll(String sqlDeleteAll) {
+		this.sqlDeleteAll = sqlDeleteAll;
+	}
+
+	public void setSqlGetCount(String sqlGetCount) {
+		this.sqlGetCount = sqlGetCount;
+	}
 
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate= new JdbcTemplate(dataSource);
@@ -35,32 +67,32 @@ public class UserDaoJdbc implements UserDao{
 			};
 	
 	public void add(final User user) {
-		this.jdbcTemplate.update("insert into users(id,name,password,level,login,recommend,email) values(?,?,?,?,?,?,?)", 
+		this.jdbcTemplate.update(this.sqlAdd, 
 				user.getId(), user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 	
 	public User get(String id) {
-		return this.jdbcTemplate.queryForObject("select * from users where id = ?",
+		return this.jdbcTemplate.queryForObject(this.sqlGet,
 				new Object[] {id}, this.userMapper);
 	}
 	
 	public List<User> getAll() {
-		return this.jdbcTemplate.query("select * from users order by id", 
+		return this.jdbcTemplate.query(this.sqlGetAll, 
 				this.userMapper);
 	}
 	
 	
 	public void deleteAll(){
-		this.jdbcTemplate.update("delete from users");
+		this.jdbcTemplate.update(this.sqlDeleteAll);
 		
 	}
 
 	public int getCount(){
-		return this.jdbcTemplate.queryForInt("select count(*) from users");
+		return this.jdbcTemplate.queryForInt(this.sqlGetCount);
 	}
 
 	public void update(User user) {
-		this.jdbcTemplate.update("update users set name=?, password=?, level=?, login=?, recommend=?, email=? where id=?",
+		this.jdbcTemplate.update(this.sqlUpdate,
 				user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(),user.getEmail(), user.getId());
 		
 		

@@ -42,8 +42,6 @@ import springbook.user.domain.Level;
 import springbook.user.domain.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/mysql.xml")
-@Transactional
-@TransactionConfiguration(defaultRollback=false)
 public class UserServiceTest {
 	@Autowired 
 	UserService userService;
@@ -195,8 +193,6 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	@Transactional
-	@Rollback(false)
 	public void transactionSync() {
 		userService.deleteAll();
 		userService.add(users.get(0));
