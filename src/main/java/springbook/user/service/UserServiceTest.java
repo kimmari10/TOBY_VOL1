@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.aspectj.org.eclipse.jdt.internal.compiler.ast.FalseLiteral;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +28,10 @@ import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +42,8 @@ import springbook.user.domain.Level;
 import springbook.user.domain.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/mysql.xml")
-
+@Transactional
+@TransactionConfiguration(defaultRollback=false)
 public class UserServiceTest {
 	@Autowired 
 	UserService userService;
@@ -68,6 +72,7 @@ public class UserServiceTest {
 				new User("green", "오민규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "ss@naver.com"));
 	}
 	@Test
+	@Rollback
 	public void add() {
 		userDao.deleteAll();
 		
@@ -190,21 +195,12 @@ public class UserServiceTest {
 	}
 	
 	@Test
+	@Transactional
+	@Rollback(false)
 	public void transactionSync() {
-		userDao.deleteAll();
-		assertThat(userDao.getCount(), is(0));
-		
-		DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
-		TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
-				
-		
+		userService.deleteAll();
 		userService.add(users.get(0));
 		userService.add(users.get(1));
-		assertThat(userDao.getCount(), is(2));
-		
-		transactionManager.rollback(txStatus);
-		
-		assertThat(userDao.getCount(), is(0));
 	}
 	
 	static class TestUserServiceImpl extends UserServiceImpl {
