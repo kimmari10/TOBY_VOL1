@@ -3,6 +3,7 @@ package springbook.user.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -19,9 +20,14 @@ public class UserDaoJdbc implements UserDao{
 	private String sqlGetAll;
 	private String sqlDeleteAll;
 	private String sqlGetCount;
+	private Map<String, String> sqlMap;
+
 	
 	
-	
+	public void setSqlMap(Map<String, String> sqlMap) {
+		this.sqlMap = sqlMap;
+	}
+
 	public void setSqlAdd(String sqlAdd) {
 		this.sqlAdd = sqlAdd;
 	}
@@ -67,32 +73,32 @@ public class UserDaoJdbc implements UserDao{
 			};
 	
 	public void add(final User user) {
-		this.jdbcTemplate.update(this.sqlAdd, 
+		this.jdbcTemplate.update(this.sqlMap.get("add"), 
 				user.getId(), user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 	
 	public User get(String id) {
-		return this.jdbcTemplate.queryForObject(this.sqlGet,
+		return this.jdbcTemplate.queryForObject(this.sqlMap.get("get"),
 				new Object[] {id}, this.userMapper);
 	}
 	
 	public List<User> getAll() {
-		return this.jdbcTemplate.query(this.sqlGetAll, 
+		return this.jdbcTemplate.query(this.sqlMap.get("getAll"), 
 				this.userMapper);
 	}
 	
 	
 	public void deleteAll(){
-		this.jdbcTemplate.update(this.sqlDeleteAll);
+		this.jdbcTemplate.update(this.sqlMap.get("deleteAll"));
 		
 	}
 
 	public int getCount(){
-		return this.jdbcTemplate.queryForInt(this.sqlGetCount);
+		return this.jdbcTemplate.queryForInt(this.sqlMap.get("getCount"));
 	}
 
 	public void update(User user) {
-		this.jdbcTemplate.update(this.sqlUpdate,
+		this.jdbcTemplate.update(this.sqlMap.get("update"),
 				user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(),user.getEmail(), user.getId());
 		
 		
