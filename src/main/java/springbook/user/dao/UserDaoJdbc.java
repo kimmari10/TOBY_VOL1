@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
+import springbook.user.sqlservice.SqlService;
 
 public class UserDaoJdbc implements UserDao{
 	private String sqlAdd;
@@ -21,9 +22,14 @@ public class UserDaoJdbc implements UserDao{
 	private String sqlDeleteAll;
 	private String sqlGetCount;
 	private Map<String, String> sqlMap;
+	private SqlService sqlService;
 
 	
 	
+	public void setSqlService(SqlService sqlService) {
+		this.sqlService = sqlService;
+	}
+
 	public void setSqlMap(Map<String, String> sqlMap) {
 		this.sqlMap = sqlMap;
 	}
@@ -73,32 +79,32 @@ public class UserDaoJdbc implements UserDao{
 			};
 	
 	public void add(final User user) {
-		this.jdbcTemplate.update(this.sqlMap.get("add"), 
+		this.jdbcTemplate.update(this.sqlService.getSql("userAdd"), 
 				user.getId(), user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 	
 	public User get(String id) {
-		return this.jdbcTemplate.queryForObject(this.sqlMap.get("get"),
+		return this.jdbcTemplate.queryForObject(this.sqlService.getSql("userGet"),
 				new Object[] {id}, this.userMapper);
 	}
 	
 	public List<User> getAll() {
-		return this.jdbcTemplate.query(this.sqlMap.get("getAll"), 
+		return this.jdbcTemplate.query(this.sqlService.getSql("userGetAll"), 
 				this.userMapper);
 	}
 	
 	
 	public void deleteAll(){
-		this.jdbcTemplate.update(this.sqlMap.get("deleteAll"));
+		this.jdbcTemplate.update(this.sqlService.getSql("userDeleteAll"));
 		
 	}
 
 	public int getCount(){
-		return this.jdbcTemplate.queryForInt(this.sqlMap.get("getCount"));
+		return this.jdbcTemplate.queryForInt(this.sqlService.getSql("userGetCount"));
 	}
 
 	public void update(User user) {
-		this.jdbcTemplate.update(this.sqlMap.get("update"),
+		this.jdbcTemplate.update(this.sqlService.getSql("userUpdate"),
 				user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(),user.getEmail(), user.getId());
 		
 		
