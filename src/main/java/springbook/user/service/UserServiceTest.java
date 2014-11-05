@@ -13,7 +13,6 @@ import static springbook.user.service.UserServiceImpl.MIN_RECCOMEND_FOR_GOLD;
 
 import java.util.Arrays;
 import java.util.List;
-
 import javax.sql.DataSource;
 
 import org.aspectj.org.eclipse.jdt.internal.compiler.ast.FalseLiteral;
