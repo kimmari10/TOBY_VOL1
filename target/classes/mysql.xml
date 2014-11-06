@@ -17,6 +17,12 @@
     	<property name="username" value="js" />
     	<property name="password" value="kim" />
     </bean>
+<!--    	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+    	<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+    	<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+    	<property name="username" value="JS" />
+    	<property name="password" value="1111" />
+    </bean> -->
 
     <bean id="userService" class="springbook.user.service.UserServiceImpl">
         <property name="userDao" ref="userDao" />
@@ -28,18 +34,7 @@
 	    <property name="sqlService" ref="sqlService" />
 	</bean>
 	
-	<bean id="sqlService" class="springbook.user.sqlservice.SimpleSqlService">
-	    <property name="sqlMap">
-	        <map>
-	            <entry key="userAdd" value="insert into users(id,name,password,level,login,recommend,email) values(?,?,?,?,?,?,?)" />
-	            <entry key="userUpdate" value="update users set name=?, password=?, level=?, login=?, recommend=?, email=? where id=?" />
-	            <entry key="userGet" value="select * from users where id = ?" />
-	            <entry key="userGetAll" value="select * from users order by id" />
-	            <entry key="userDeleteAll" value="delete from users" />
-	            <entry key="userGetCount" value="select count(*) from users" />
-	        </map>
-	    </property>
-	</bean>
+	<bean id="sqlService" class="springbook.user.sqlservice.XxmlSqlService" />
 	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
