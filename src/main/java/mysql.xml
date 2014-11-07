@@ -34,12 +34,12 @@
 
 	<bean id="userDao" class="springbook.user.dao.UserDaoJdbc" >
 	    <property name="dataSource" ref="dataSource" />
-	    <property name="sqlService" ref="sqlService" />
+	    <property name="sqlService" ref="sqlService1" />
 	</bean>
 	
-	<bean id="sqlService" class="springbook.user.sqlservice.XmlSqlService">
-	    <property name="sqlReader" ref="sqlService" />
-	    <property name="sqlRegistry" ref="sqlService" />
+	<bean id="sqlService1" class="springbook.user.sqlservice.XmlSqlService">
+	    <property name="sqlReader" ref="sqlService1" />
+	    <property name="sqlRegistry" ref="sqlService1" />
 	    <property name="sqlmapFile" value="sqlmap.xml" />
     </bean>
 	
