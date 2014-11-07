@@ -37,17 +37,10 @@
 	    <property name="sqlService" ref="sqlService" />
 	</bean>
 	
-	<bean id="sqlService" class="springbook.user.sqlservice.BaseSqlService">
-	    <property name="sqlReader" ref="sqlReader" />
-	    <property name="sqlRegistry" ref="sqlRegistry" />
+	<bean id="sqlService" class="springbook.user.sqlservice.DefaultSqlService">
+	    <!-- Default대신 사용할 빈 선언 -->
     </bean>
     
-	<bean id="sqlReader" class="springbook.user.sqlservice.JaxbXmlSqlReader">
-	    <property name="sqlmapFile" value="sqlmap.xml" />
-	</bean>
-	
-	<bean id="sqlRegistry" class="springbook.user.sqlservice.HashMapSqlRegistry">
-	</bean>
 	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
