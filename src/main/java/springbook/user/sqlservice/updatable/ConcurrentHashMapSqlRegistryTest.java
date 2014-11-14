@@ -60,5 +60,5 @@ public class ConcurrentHashMapSqlRegistryTest {
 	public void updateWithNotExistingKey() {
 		sqlRegistry.updateSql("SQL9999!@#$","Modified2");
 	}
-	
+
 }
