@@ -7,13 +7,12 @@
         <property name="contextPath" value="springbook.user.sqlservice.jaxb" />
     </bean>
     
-    <bean id="sqlService" class="springbook.user.sqlservice.BaseSqlService">
+    <bean id="sqlService" class="springbook.user.sqlservice.OxmSqlService">
         <property name="unmarshaller" ref="unmarshaller" />
-        <property name="sqlmap" value="classpath:springbook/user/dao/sqlmap.xml" />
         <property name="sqlRegistry" ref="sqlRegistry" />
     </bean>
     
-    <bean id="sqlRegistry" class="springbook.user.sqlservice.MyUpdatableSqlRegistry" />
+    <bean id="sqlRegistry" class="springbook.user.sqlservice.updatable.ConcurrentHashMapSqlRegistry" />
     <bean id="sqlAdminService" class="springbook.user.sqlService.SqlAdminService">
     	<property name="updatableSqlRegistry" ref="sqlRegistry" />
     	
