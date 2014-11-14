@@ -7,11 +7,18 @@
         <property name="contextPath" value="springbook.user.sqlservice.jaxb" />
     </bean>
     
-    <bean id="sqlService" class="springbook.user.sqlservice.OxmSqlService">
+    <bean id="sqlService" class="springbook.user.sqlservice.BaseSqlService">
         <property name="unmarshaller" ref="unmarshaller" />
         <property name="sqlmap" value="classpath:springbook/user/dao/sqlmap.xml" />
+        <property name="sqlRegistry" ref="sqlRegistry" />
     </bean>
-            
+    
+    <bean id="sqlRegistry" class="springbook.user.sqlservice.MyUpdatableSqlRegistry" />
+    <bean id="sqlAdminService" class="springbook.user.sqlService.SqlAdminService">
+    	<property name="updatableSqlRegistry" ref="sqlRegistry" />
+    	
+    </bean>        
+
 <!--     <bean id="unmarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
         <property name="mappingLocation" value="springbook/learningtest/spring/oxm/mapping.xml" />
     </bean>    -->     
