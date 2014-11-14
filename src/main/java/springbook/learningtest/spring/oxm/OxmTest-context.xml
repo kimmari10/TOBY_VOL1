@@ -12,7 +12,7 @@
         <property name="sqlRegistry" ref="sqlRegistry" />
     </bean>
     
-    <bean id="sqlRegistry" class="springbook.user.sqlservice.updatable.ConcurrentHashMapSqlRegistry" />
+    <bean id="sqlRegistry" class="springbook.user.sqlservice.updatable.ConcurrentHashMapSqlRegistry" /> 
     <bean id="sqlAdminService" class="springbook.user.sqlService.SqlAdminService">
     	<property name="updatableSqlRegistry" ref="sqlRegistry" />
     	
