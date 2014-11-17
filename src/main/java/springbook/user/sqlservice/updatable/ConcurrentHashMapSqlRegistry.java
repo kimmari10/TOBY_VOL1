@@ -11,12 +11,10 @@ public class ConcurrentHashMapSqlRegistry implements UpdatableSqlRegistry{
 	
 	private Map<String, String> sqlMap = new ConcurrentHashMap<String, String>();
 	
-	@Override
 	public void registerSql(String key, String sql) {
 		sqlMap.put(key, sql);
 	}
 
-	@Override
 	public String findSql(String key) throws SqlNotFoundException {
 		String sql = sqlMap.get(key);
 		if(sql == null) {
