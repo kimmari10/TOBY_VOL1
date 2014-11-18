@@ -16,7 +16,6 @@ public class BaseSqlService implements SqlService{
 	}
 
 
-	@Override
 	public String getSql(String key) throws SqlRetrievalFailureException {
 		try { return this.sqlRegistry.findSql(key);}
 		catch (SqlNotFoundException e) {throw new SqlRetrievalFailureException(e);

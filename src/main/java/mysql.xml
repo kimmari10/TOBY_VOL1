@@ -24,9 +24,9 @@
     	<property name="password" value="kim" />
     </bean> -->
     
-    <jdbc:embedded-database id="embeddedDatabase" type="HSQL">
+    <!-- <jdbc:embedded-database id="embeddedDatabase" type="HSQL">
         <jdbc:script location="classpath:springbook/user/sqlservice/updatable/sqlRegistrySchema.sql"/>
-    </jdbc:embedded-database>
+    </jdbc:embedded-database> -->
     
 <!--    	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
     	<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
@@ -45,7 +45,7 @@
 	    <property name="sqlService" ref="sqlService" />
 	</bean> -->
 	
-    <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+    <!-- <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="contextPath" value="springbook.user.sqlservice.jaxb" />
     </bean>
     
@@ -56,7 +56,7 @@
     
     <bean id="sqlRegistry" class="springbook.user.sqlservice.updatable.EmbeddedDbSqlRegistry">
     	<property name="dataSource" ref="embeddedDatabase"></property>
-    </bean>    
+    </bean>     -->
     
 	
 	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
