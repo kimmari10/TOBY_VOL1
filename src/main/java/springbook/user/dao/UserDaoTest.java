@@ -24,7 +24,7 @@ import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/mysql.xml")
+@ContextConfiguration(classes=TestApplicationContext.class)
 @DirtiesContext
 public class UserDaoTest {
 	@Autowired

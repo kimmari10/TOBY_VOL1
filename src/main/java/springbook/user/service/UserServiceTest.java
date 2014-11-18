@@ -13,6 +13,7 @@ import static springbook.user.service.UserServiceImpl.MIN_RECCOMEND_FOR_GOLD;
 
 import java.util.Arrays;
 import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.aspectj.org.eclipse.jdt.internal.compiler.ast.FalseLiteral;
@@ -36,11 +37,12 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import springbook.user.dao.TestApplicationContext;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/mysql.xml")
+@ContextConfiguration(classes=TestApplicationContext.class)
 public class UserServiceTest {
 	@Autowired 
 	UserService userService;
