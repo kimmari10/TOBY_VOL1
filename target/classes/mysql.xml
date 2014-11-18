@@ -59,9 +59,9 @@
     </bean>    
     
 	
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
-	</bean>
+	</bean> -->
 	<bean id="mailSender" class="springbook.user.service.DummyMailSender" />
 	
 <!--  	<bean id="transactionAdvice" class="org.springframework.transaction.interceptor.TransactionInterceptor">
@@ -88,7 +88,7 @@
 	<tx:annotation-driven/>
 	
 	
-	<bean id="testUserService" class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
+	<bean id="testUserService" class="springbook.user.service.UserServiceTest$TestUserService"
 	    parent="userService" />
 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 </beans>

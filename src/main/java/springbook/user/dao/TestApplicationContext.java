@@ -5,11 +5,14 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @ImportResource("/mysql.xml")
 public class TestApplicationContext {
+	
 	@Bean
 	public DataSource dataSource() {
 		SimpleDriverDataSource ds = new SimpleDriverDataSource();
@@ -20,5 +23,11 @@ public class TestApplicationContext {
 		
 		return ds;
 	}
-
+	
+	@Bean
+	public PlatformTransactionManager transactionManager() {
+		DataSourceTransactionManager tm = new DataSourceTransactionManager();
+		tm.setDataSource(dataSource());
+		return tm;
+	}
 }
