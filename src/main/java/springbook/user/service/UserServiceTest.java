@@ -200,7 +200,7 @@ public class UserServiceTest {
 		userService.add(users.get(1));
 	}
 	
-	static class TestUserService extends UserServiceImpl {
+	public static class TestUserService extends UserServiceImpl {
 		private String id = "madnite1";
 		
 		protected void upgradeLevel(User user) {

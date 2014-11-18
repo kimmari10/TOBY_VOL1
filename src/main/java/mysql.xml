@@ -35,7 +35,7 @@
     	<property name="password" value="1111" />
     </bean> -->
 
-    <bean id="userService" class="springbook.user.service.UserServiceImpl">
+    <!-- <bean id="userService" class="springbook.user.service.UserServiceImpl">
         <property name="userDao" ref="userDao" />
         <property name="mailSender" ref="mailSender" />
     </bean>
@@ -43,7 +43,7 @@
 	<bean id="userDao" class="springbook.user.dao.UserDaoJdbc" >
 	    <property name="dataSource" ref="dataSource" />
 	    <property name="sqlService" ref="sqlService" />
-	</bean>
+	</bean> -->
 	
     <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="contextPath" value="springbook.user.sqlservice.jaxb" />
@@ -62,7 +62,7 @@
 	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean> -->
-	<bean id="mailSender" class="springbook.user.service.DummyMailSender" />
+	<!-- <bean id="mailSender" class="springbook.user.service.DummyMailSender" /> -->
 	
 <!--  	<bean id="transactionAdvice" class="org.springframework.transaction.interceptor.TransactionInterceptor">
 	    <property name="transactionManager" ref="transactionManager" />
@@ -88,8 +88,8 @@
 	<tx:annotation-driven/>
 	
 	
-	<bean id="testUserService" class="springbook.user.service.UserServiceTest$TestUserService"
-	    parent="userService" />
+	<!-- <bean id="testUserService" class="springbook.user.service.UserServiceTest$TestUserService"
+	    parent="userService" /> -->
 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 </beans>
 
