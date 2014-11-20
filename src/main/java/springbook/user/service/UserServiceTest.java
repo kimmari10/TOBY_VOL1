@@ -31,12 +31,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import springbook.user.dao.TestApplicationContext;
+import springbook.user.dao.AppContext;
+import springbook.user.dao.TestAppContext;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=TestApplicationContext.class)
+@ContextConfiguration(classes={AppContext.class, TestAppContext.class})
 public class UserServiceTest {
 	@Autowired 
 	UserService userService;
