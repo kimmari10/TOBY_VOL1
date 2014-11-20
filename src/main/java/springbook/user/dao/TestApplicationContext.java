@@ -1,5 +1,6 @@
 package springbook.user.dao;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import springbook.user.service.DummyMailSender;
 import springbook.user.service.UserService;
@@ -24,7 +26,7 @@ import springbook.user.sqlservice.SqlService;
 import springbook.user.sqlservice.updatable.EmbeddedDbSqlRegistry;
 
 @Configuration
-@ImportResource("/mysql.xml")
+@EnableTransactionManagement
 public class TestApplicationContext {
 	@Autowired
 	SqlService sqlService;
