@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -22,6 +23,7 @@ public class UserDaoJdbc implements UserDao{
 	private String sqlDeleteAll;
 	private String sqlGetCount;
 	private Map<String, String> sqlMap;
+	@Autowired
 	private SqlService sqlService;
 
 	
@@ -57,7 +59,8 @@ public class UserDaoJdbc implements UserDao{
 	public void setSqlGetCount(String sqlGetCount) {
 		this.sqlGetCount = sqlGetCount;
 	}
-
+	
+	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate= new JdbcTemplate(dataSource);
 		
