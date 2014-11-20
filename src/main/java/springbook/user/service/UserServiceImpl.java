@@ -2,24 +2,23 @@ package springbook.user.service;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.stereotype.Service;
 
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
+@Service("userService")
 public class UserServiceImpl implements UserService{
+	@Autowired
 	private MailSender mailSender;
-	private DataSource dataSource;
-	private PlatformTransactionManager transactionManager;
 	
+	@Autowired
 	UserDao userDao;
+	
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	public static final int MIN_RECCOMEND_FOR_GOLD = 30;
 	
@@ -32,13 +31,6 @@ public class UserServiceImpl implements UserService{
 		this.userDao = userDao;
 	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-	
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
 
 	public void upgradeLevels() {
 		List<User> users = userDao.getAll();

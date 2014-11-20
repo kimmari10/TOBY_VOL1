@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import springbook.user.service.DummyMailSender;
 import springbook.user.service.UserService;
-import springbook.user.service.UserServiceImpl;
 import springbook.user.service.UserServiceTest.TestUserService;
 import springbook.user.sqlservice.OxmSqlService;
 import springbook.user.sqlservice.SqlRegistry;
@@ -28,8 +26,11 @@ import springbook.user.sqlservice.updatable.EmbeddedDbSqlRegistry;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan
+@ComponentScan(basePackages="springbook.user")
 public class TestApplicationContext {
+	
+	@Autowired
+	UserDao userDao;
 	
 	@Bean
 	public DataSource dataSource() {
@@ -49,17 +50,6 @@ public class TestApplicationContext {
 		return tm;
 	}
 	
-	
-	@Autowired
-	UserDao userDao;
-	
-	@Bean
-	public UserService userService() {
-		UserServiceImpl userService = new UserServiceImpl();
-		userService.setUserDao(this.userDao);
-		userService.setMailSender(mailSender());
-		return userService;
-	}
 	
 	@Bean
 	public UserService testUserService() {
