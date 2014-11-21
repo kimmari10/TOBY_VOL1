@@ -3,11 +3,16 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.MailSender;
@@ -19,19 +24,35 @@ import springbook.user.service.DummyMailSender;
 import springbook.user.service.UserService;
 import springbook.user.service.UserServiceTest.TestUserService;
 
+import com.mysql.jdbc.Driver;
+
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages="springbook.user")
-@Import({SqlServiceContext.class, AppContext.TestAppContext.class, AppContext.ProductionAppContext.class})
+@Import(SqlServiceContext.class)
+@PropertySource("/database.properties")
 public class AppContext {
+	@Autowired
+	Environment env;
+	
+	@Value("${db.driverClass}") Class<? extends Driver> driverClass;
+	@Value("${db.url}") String url;
+	@Value("${db.username}") String username;
+	@Value("${db.password}") String password;
+	
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+		return new PropertySourcesPlaceholderConfigurer();
+	}
 	
 	@Bean
 	public DataSource dataSource() {
 		SimpleDriverDataSource ds = new SimpleDriverDataSource();
-		ds.setDriverClass(com.mysql.jdbc.Driver.class);
-		ds.setUrl("jdbc:mysql://localhost/jsjs");
-		ds.setUsername("js");
-		ds.setPassword("kim");
+
+		ds.setDriverClass(this.driverClass); 
+		ds.setUrl(this.url);
+		ds.setUsername(this.username);
+		ds.setPassword(this.password);
 		
 		return ds;
 	}
