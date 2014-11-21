@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springbook.user.service.DummyMailSender;
 import springbook.user.service.UserService;
 import springbook.user.service.UserServiceTest.TestUserService;
+import springbook.user.sqlservice.SqlMapConfig;
+import springbook.user.sqlservice.UserSqlMapConfig;
 
 import com.mysql.jdbc.Driver;
 
@@ -43,6 +45,11 @@ public class AppContext {
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
+	}
+	
+	@Bean
+	public SqlMapConfig sqlMapConfig() {
+		return new UserSqlMapConfig();
 	}
 	
 	@Bean
