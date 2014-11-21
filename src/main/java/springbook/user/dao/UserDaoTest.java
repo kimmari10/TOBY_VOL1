@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
@@ -33,6 +34,8 @@ public class UserDaoTest {
 	private UserDao dao;
 	@Autowired
 	private DataSource dataSource;
+	@Autowired
+	DefaultListableBeanFactory bf;
 	
 	private User user1;
 	private User user2;
@@ -40,6 +43,13 @@ public class UserDaoTest {
 
 	public static void main(String[] args) {
 		JUnitCore.main("springbook.user.dao.UserDaoTest");
+	}
+
+	@Test
+	public void beans() {
+		for(String n : bf.getBeanDefinitionNames()) {
+			System.out.println(n + "\t" + bf.getBean(n).getClass().getName());
+		}
 	}
 	
 	@Test
