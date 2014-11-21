@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
@@ -33,7 +34,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import springbook.user.dao.AppContext;
-import springbook.user.dao.TestAppContext;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
@@ -58,14 +58,25 @@ public class UserServiceTest {
 	
 	List<User> users;
 	
+	
+	@Autowired
+	DefaultListableBeanFactory bf;
+	
+	@Test
+	public void beans() {
+		for(String n : bf.getBeanDefinitionNames()) {
+			System.out.println(n + "\t" + bf.getBean(n).getClass().getName());
+		}
+	}
+	
 	@Before
 	public void setUp() {
 		users = Arrays.asList(
-				new User("bumjin", "박범진", "p1", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0, "bumjin@naver.com"),
-				new User("joytouch", "강명성", "p2", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0, "kang@naver.com"),
-				new User("erwins", "신승한", "p3", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD-1, "aa@naver.com"),
-				new User("madnite1", "이상호", "p4", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD, "abc@naver.com"),
-				new User("green", "오민규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "ss@naver.com"));
+				new User("bumjin", "박범진", "p1", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0, "kimmari10@naver.com"),
+				new User("joytouch", "강명성", "p2", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0, "kimmari10@naver.com"),
+				new User("erwins", "신승한", "p3", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD-1, "kimmari10@naver.com"),
+				new User("madnite1", "이상호", "p4", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD, "kimmari10@naver.com"),
+				new User("green", "오민규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "kimmari10@naver.com"));
 	}
 	@Test
 	@Rollback
